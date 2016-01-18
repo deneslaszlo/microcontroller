@@ -1,5 +1,7 @@
-int sensorPin = A0;
-int motionPin = 2;
+int sensorPinArray[] = {A0};
+int sensorCount = 1;
+int motionPinArray[] = {2};
+int motionSensorCount = 1;
 int ledPin = 12;    
 int powerPin = 4;
 int potMeterPin = A1;
@@ -17,14 +19,19 @@ boolean isDarkNow;
 void setup() {
   pinMode(ledPin, OUTPUT);
   pinMode(powerPin, OUTPUT);
-  pinMode(motionPin, INPUT);
+  setupMotionPins();
   Serial.begin(9600);
+}
+
+void setupMotionPins(){
+  for(int i = 0; i< motionSensorCount; i++){
+    pinMode(motionPinArray[i], INPUT);
+  }
 }
 
 void loop(){
   updateLightTreshold();
   readMotionAndDark(); 
-  //debugSensors(); 
   setupTimerForLight();
   reduceTimers();
   lightAccordingToTimer();
@@ -42,23 +49,38 @@ int readPotMeterValue(){
 void readMotionAndDark(){
   isMotionNow = isMotion();
   isDarkNow = isDark();
+  if(isDarkNow) Serial.println("Now is Dark");
 }
 
 boolean isDark() {
-  return analogRead(sensorPin) < lightTreshold;
+  boolean dark = true;
+  for(int i=0; i< sensorCount; i++){
+    boolean darkOnPin = isDarkOnPin(sensorPinArray[i]);
+    if(!darkOnPin){
+      dark = false;
+      break;
+    }
+  }
+  return dark;
+}
+
+boolean isDarkOnPin(int pin){
+  return analogRead(pin) < lightTreshold;
 }
 
 boolean isMotion(){
-  return digitalRead(motionPin) == HIGH;
+  boolean motion = false;
+  for(int i=0; i<motionSensorCount; i++){
+    if(isMotionOnPin(motionPinArray[i])){
+      motion = true;
+      break;
+    }
+  }
+  return motion;
 }
 
-void debugSensors(){
-  Serial.print("Light sensor: ");
-  Serial.print(analogRead(sensorPin));
-  Serial.print(" Poti: ");
-  Serial.print(analogRead(potMeterPin));
-  Serial.print(" Motion sensor: ");
-  Serial.println(digitalRead(motionPin));
+boolean isMotionOnPin(int pin){
+  return digitalRead(pin) == HIGH;
 }
 
 void setupTimerForLight() {
