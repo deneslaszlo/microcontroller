@@ -5,7 +5,7 @@ int powerPin = 4;
 int potMeterPin = A1;
 
  
-int sleepTimeInMs = 500; 
+int sleepTimeInMs = 100; 
 int lightTreshold = 25;
 int lightTimer = 0;
 int lightUpInMs = 5000;
