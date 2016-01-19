@@ -49,7 +49,6 @@ int readPotMeterValue(){
 void readMotionAndDark(){
   isMotionNow = isMotion();
   isDarkNow = isDark();
-  if(isDarkNow) Serial.println("Now is Dark");
 }
 
 boolean isDark() {
