@@ -1,10 +1,10 @@
-int sensorPinArray[] = {A0};
+int sensorPinArray[] = {A1, A2, A3, A4};
 int sensorCount = 1;
 int motionPinArray[] = {2};
 int motionSensorCount = 1;
 int ledPin = 12;    
 int powerPin = 4;
-int potMeterPin = A1;
+int potMeterPin = A0;
 
  
 int sleepTimeInMs = 100; 
