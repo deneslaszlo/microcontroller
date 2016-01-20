@@ -1,5 +1,5 @@
 int sensorPinArray[] = {A1, A2, A3, A4};
-int sensorCount = 1;
+int sensorCount = 4;
 int motionPinArray[] = {2};
 int motionSensorCount = 1;
 int ledPin = 12;    
@@ -16,7 +16,7 @@ int motionMemory = 5000;
 boolean isMotionNow;
 boolean isDarkNow;
 
-void setup() {
+void setup() {  
   pinMode(ledPin, OUTPUT);
   pinMode(powerPin, OUTPUT);
   setupMotionPins();
@@ -40,6 +40,7 @@ void loop(){
 
 void updateLightTreshold(){     
   lightTreshold = readPotMeterValue();
+  lightTreshold = map(lightTreshold, 0, 1023, 0, 256);
 }
 
 int readPotMeterValue(){
