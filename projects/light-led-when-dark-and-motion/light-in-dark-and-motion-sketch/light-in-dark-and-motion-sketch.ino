@@ -8,7 +8,7 @@ int potMeterPin = A0;
 
  
 int sleepTimeInMs = 100; 
-int lightTreshold = 25;
+int lightThreshold = 25;
 int lightTimer = 0;
 int lightUpInMs = 5000;
 int motionTimer = 0;
@@ -30,7 +30,7 @@ void setupMotionPins(){
 }
 
 void loop(){
-  updateLightTreshold();
+  updateLightThreshold();
   readMotionAndDark(); 
   setupTimerForLight();
   reduceTimers();
@@ -38,9 +38,9 @@ void loop(){
   sleepWithPowerblocking();
 }
 
-void updateLightTreshold(){     
-  lightTreshold = readPotMeterValue();
-  lightTreshold = map(lightTreshold, 0, 1023, 0, 256);
+void updateLightThreshold(){     
+  lightThreshold = readPotMeterValue();
+  lightThreshold = map(lightThreshold, 0, 1023, 0, 100);
 }
 
 int readPotMeterValue(){
@@ -65,7 +65,9 @@ boolean isDark() {
 }
 
 boolean isDarkOnPin(int pin){
-  return analogRead(pin) < lightTreshold;
+  int lightValue = analogRead(pin);
+  lightValue = map(lightValue, 0, 1023, 0, 5000);
+  return analogRead(pin) <= lightThreshold;
 }
 
 boolean isMotion(){
